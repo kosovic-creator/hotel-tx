@@ -1,122 +1,44 @@
-const sampleData = {
-  users: [
-    {
-      name: 'John',
-      email: 'admin@example.com',
-      password: '123456',
-      role: 'admin',
-    },
-    {
-      name: 'Jane',
-      email: 'user@example.com',
-      password: '123456',
-      role: 'user',
-    },
-  ],
-  products: [
-    {
-      name: 'Polo Sporting Stretch Shirt',
-      slug: 'polo-sporting-stretch-shirt',
-      category: "Muške košulje",
-      description: 'Classic Polo style with modern comfort',
-      images: [
-        '/images/sample-products/p1-1.jpg',
-        '/images/sample-products/p1-2.jpg',
-      ],
-      price: 59.99,
-      brand: 'Polo',
-      rating: 4.5,
-      numReviews: 10,
-      stock: 5,
-      isFeatured: true,
-      banner: '/images/banner-1.jpg',
-    },
-    {
-      name: 'Brooks Brothers Long Sleeved Shirt',
-      slug: 'brooks-brothers-long-sleeved-shirt',
-      category: "Muške košulje",
-      description: 'Timeless style and premium comfort',
-      images: [
-        '/images/sample-products/p2-1.jpg',
-        '/images/sample-products/p2-2.jpg',
-      ],
-      price: 85.9,
-      brand: 'Brooks Brothers',
-      rating: 4.2,
-      numReviews: 8,
-      stock: 10,
-      isFeatured: true,
-      banner: '/images/banner-2.jpg',
-    },
-    {
-      name: 'Tommy Hilfiger Classic Fit Dress Shirt',
-      slug: 'tommy-hilfiger-classic-fit-dress-shirt',
-      category: "Muške košulje",
-      description: 'A perfect blend of sophistication and comfort',
-      images: [
-        '/images/sample-products/p3-1.jpg',
-        '/images/sample-products/p3-2.jpg',
-      ],
-      price: 99.95,
-      brand: 'Tommy Hilfiger',
-      rating: 4.9,
-      numReviews: 3,
-      stock: 0,
-      isFeatured: false,
-      banner: null,
-    },
-    {
-      name: 'Calvin Klein Slim Fit Stretch Shirt',
-      slug: 'calvin-klein-slim-fit-stretch-shirt',
-      category: "Muške košulje",
-      description: 'Streamlined design with flexible stretch fabric',
-      images: [
-        '/images/sample-products/p4-1.jpg',
-        '/images/sample-products/p4-2.jpg',
-      ],
-      price: 39.95,
-      brand: 'Calvin Klein',
-      rating: 3.6,
-      numReviews: 5,
-      stock: 10,
-      isFeatured: false,
-      banner: null,
-    },
-    {
-      name: 'Polo Ralph Lauren Oxford Shirt',
-      slug: 'polo-ralph-lauren-oxford-shirt',
-      category: "Muške košulje",
-      description: 'Iconic Polo design with refined oxford fabric',
-      images: [
-        '/images/sample-products/p5-1.jpg',
-        '/images/sample-products/p5-2.jpg',
-      ],
-      price: 79.99,
-      brand: 'Polo',
-      rating: 4.7,
-      numReviews: 18,
-      stock: 6,
-      isFeatured: false,
-      banner: null,
-    },
-    {
-      name: 'Polo Classic Pink Hoodie',
-      slug: 'polo-classic-pink-hoodie',
-      category: "Men's Sweatshirts",
-      description: 'Soft, stylish, and perfect for laid-back days',
-      images: [
-        '/images/sample-products/p6-1.jpg',
-        '/images/sample-products/p6-2.jpg',
-      ],
-      price: 99.99,
-      brand: 'Polo',
-      rating: 4.6,
-      numReviews: 12,
-      stock: 8,
-      isFeatured: true,
-      banner: null,
-    },
-  ],
-};
+import { PrismaClient, Prisma } from '@prisma/client'
 
-export default sampleData;
+const prisma = new PrismaClient()
+
+const userData: Prisma.UserCreateInput[] = [
+  {
+    name: 'Alice',
+    email: 'alice@prisma.io',
+    posts: {
+      create: [
+        {
+          title: 'Join the Prisma Discord',
+          content: 'https://pris.ly/discord',
+          published: true,
+        },
+        {
+          title: 'Prisma on YouTube',
+          content: 'https://pris.ly/youtube',
+        },
+      ],
+    },
+  },
+  {
+    name: 'Bob',
+    email: 'bob@prisma.io',
+    posts: {
+      create: [
+        {
+          title: 'Follow Prisma on Twitter',
+          content: 'https://www.twitter.com/prisma',
+          published: true,
+        },
+      ],
+    },
+  }
+]
+
+export async function main() {
+  for (const u of userData) {
+    await prisma.user.create({ data: u })
+  }
+}
+
+main()
